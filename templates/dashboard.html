@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Smart Traffic Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: 'Space Grotesk', sans-serif; }
+  </style>
+</head>
+<body class="bg-[#0D1117] text-gray-200">
+<div class="flex flex-col min-h-screen">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-50 bg-[#0D1117]/80 backdrop-blur-md border-b border-gray-800">
+    <div class="container mx-auto flex items-center justify-between h-20 px-6">
+      <div class="flex items-center gap-3">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="h-10 w-10"/>
+        <h1 class="text-xl font-bold text-white">Smart Traffic Dashboard</h1>
+      </div>
+      <nav class="hidden md:flex gap-6">
+        <a href="{{ url_for('home') }}" class="hover:text-blue-400">Home</a>
+        <a href="{{ url_for('dashboard') }}" class="text-blue-400">Dashboard</a>
+        <a href="{{ url_for('about') }}" class="hover:text-blue-400">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="flex-grow container mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- LEFT: Graph + Map -->
+      <div class="lg:col-span-2 space-y-8">
+
+        <!-- Traffic Volume Predictions -->
+        <section class="bg-[#161B22] p-6 rounded-lg border border-gray-800 shadow-lg">
+          <h2 class="text-xl font-bold mb-2">Traffic Volume Predictions</h2>
+          <p class="text-sm text-gray-400 mb-4">
+            Real-time comparison of actual vs. predicted traffic volume.
+          </p>
+          <div class="h-80"><canvas id="trafficVolumeChart"></canvas></div>
+        </section>
+
+        <!-- Real-Time Vehicle Positions -->
+        <section class="bg-[#161B22] p-6 rounded-lg border border-gray-800 shadow-lg">
+          <h2 class="text-xl font-bold mb-2">Real-Time Vehicle Positions</h2>
+          <p class="text-sm text-gray-400 mb-4">Live map showing vehicle positions in Delhi.</p>
+          <div id="map" class="h-96 w-full rounded-lg"></div>
+        </section>
+      </div>
+
+      <!-- RIGHT: Congestion + Historic -->
+      <div class="space-y-8">
+
+        <!-- Congestion Hotspots -->
+        <section class="bg-[#161B22] p-6 rounded-lg border border-gray-800 shadow-lg">
+          <h2 class="text-xl font-bold mb-2">Congestion Levels</h2>
+          <p class="text-sm text-gray-400 mb-4">Current congestion categories.</p>
+          <div id="congestionList" class="space-y-4"></div>
+        </section>
+
+        <!-- Historic Patterns -->
+        <section class="bg-[#161B22] p-6 rounded-lg border border-gray-800 shadow-lg">
+          <h2 class="text-xl font-bold mb-2">Historic Patterns</h2>
+          <p class="text-sm text-gray-400 mb-4">Traffic trends from past data.</p>
+          <div class="h-48"><canvas id="historicPatternsChart"></canvas></div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0D1117] border-t border-gray-800 text-center py-4 text-gray-500 text-sm">
+    Developed by [Your Name] | SIH 2025 Project
+  </footer>
+
+</div>
+
+<script>
+  // Initialize Leaflet map
+  var map = L.map('map').setView([28.6139, 77.2090], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
+
+  var vehicleIcon = L.divIcon({html: '<span class="material-symbols-outlined text-blue-400">directions_car</span>', className:'', iconSize:[24,24]});
+
+  // Fetch live data
+  async function fetchLiveData() {
+    const res = await fetch("/live");
+    const data = await res.json();
+
+    // Update Traffic Graph
+    let labels = data.historical.map(d => d.time);
+    let actual = data.historical.map(d => d.actual);
+    let predicted = data.historical.map(d => d.predicted);
+
+    trafficChart.data.labels = labels.slice(-20);
+    trafficChart.data.datasets[0].data = actual.slice(-20);
+    trafficChart.data.datasets[1].data = predicted.slice(-20);
+    trafficChart.update();
+
+    // Update Map
+    map.eachLayer((layer) => { if(layer instanceof L.Marker) map.removeLayer(layer); });
+    data.real_time.forEach(v => {
+      L.marker([v.lat, v.lon], {icon: vehicleIcon})
+        .addTo(map)
+        .bindPopup(`<b>Vehicle:</b> ${v.vehicle_id}<br><b>Speed:</b> ${v.speed} km/h<br><b>Congestion:</b> ${v.congestion}`);
+    });
+
+    // Update Congestion Levels
+    let list = document.getElementById("congestionList");
+    list.innerHTML = "";
+    data.real_time.forEach(v => {
+      let color = v.congestion === "High" ? "text-red-400" : v.congestion === "Medium" ? "text-yellow-400" : "text-green-400";
+      list.innerHTML += `<div class="flex justify-between"><span>Vehicle ${v.vehicle_id}</span><span class="${color}">${v.congestion}</span></div>`;
+    });
+  }
+
+  // Traffic Volume Chart
+  const trafficCtx = document.getElementById('trafficVolumeChart').getContext('2d');
+  const trafficChart = new Chart(trafficCtx, {
+    type: 'line',
+    data: { labels: [], datasets: [
+      { label: "Actual", data: [], borderColor: "#3B82F6", fill: false },
+      { label: "Predicted", data: [], borderColor: "#F87171", borderDash:[5,5], fill: false }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  // Historic Patterns Chart (static for now)
+  const historicCtx = document.getElementById('historicPatternsChart').getContext('2d');
+  new Chart(historicCtx, {
+    type: 'bar',
+    data: { labels: ["Morning","Afternoon","Evening","Night"], datasets: [{
+      data: [450,600,750,200],
+      backgroundColor:["#3B82F6","#F87171","#EAB308","#10B981"]
+    }]},
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  // Auto-refresh every 5s
+  setInterval(fetchLiveData, 5000);
+  fetchLiveData();
+</script>
+</body>
+</html>

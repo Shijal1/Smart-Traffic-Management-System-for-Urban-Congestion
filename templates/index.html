@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <link crossorigin href="https://fonts.gstatic.com/" rel="preconnect"/>
+  <link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <title>Smart Traffic</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body>
+  <div class="relative flex size-full min-h-screen flex-col bg-[#111a22] overflow-x-hidden" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif;">
+    <div class="layout-container flex h-full grow flex-col">
+
+      <!-- Header -->
+      <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#233648] px-10 py-3">
+        <div class="flex items-center gap-4 text-white">
+          <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Smart Traffic Logo" class="h-10 w-10">
+          <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Smart Traffic</h2>
+        </div>
+        <nav class="flex items-center gap-6 text-base text-gray-300">
+  <a class="hover:text-white transition-colors" href="{{ url_for('home') }}">Home</a>
+  <a class="hover:text-white transition-colors" href="{{ url_for('dashboard') }}">Dashboard</a>
+  <a class="hover:text-white transition-colors" href="{{ url_for('about') }}">About</a>
+</nav>
+
+      </header>
+
+      <!-- Hero Section -->
+      <main class="flex-1">
+        <section class="relative flex min-h-[60vh] items-center justify-center bg-cover bg-center py-20 text-white" style="background-image: linear-gradient(rgba(17, 26, 34, 0.8), rgba(17, 26, 34, 0.8)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAu-dnOUx7zdF2Z-EzQWIQ4_zbgXh7vU7tx_xsVyIU10JDcfMuhNE91yGAK5ZO3J7GB_YY1Cc9qJPddPjwJB6Jm5ond9UcurUgr9V82Ch2bMHkZAutQhYYnGTCQbV3nWZk2ephal1IDtspDCGWH_6nXp4bpQAp-cK_wsesElHggz_OrxSnB5vahIewFZy9j5IFCpPRwxStCzylsDoVKFhpBqKK1ZiwYNH_36CE3SvDPIz9zGMkXrieZ4X17WLmj3FxGOSobvJNt_qxN');">
+          <div class="container mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold leading-tight tracking-tight md:text-6xl">Smart Traffic Management System</h1>
+            <p class="mt-4 text-lg text-gray-300 md:text-xl">Monitor, predict, and optimize urban traffic in real-time</p>
+            <a class="mt-8 inline-block rounded-md bg-[#1172d4] px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-600" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+          </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-[#1a2632]">
+          <div class="container mx-auto px-4">
+            <h2 class="text-center text-4xl font-bold text-white mb-12">Features</h2>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+              <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
+                <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">directions_car</span>
+                <h3 class="text-xl font-bold text-white mb-2">Real-time Monitoring</h3>
+              </div>
+              <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
+                <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">show_chart</span>
+                <h3 class="text-xl font-bold text-white mb-2">Traffic Predictions</h3>
+              </div>
+              <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
+                <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">traffic</span>
+                <h3 class="text-xl font-bold text-white mb-2">Dynamic Traffic Signals</h3>
+              </div>
+              <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
+                <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">notifications_active</span>
+                <h3 class="text-xl font-bold text-white mb-2">Alerts & Notifications</h3>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- About Preview -->
+        <section class="py-20">
+          <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+              <h2 class="text-4xl font-bold text-white mb-6">About the System</h2>
+              <p class="text-lg text-gray-400">
+                Our Smart Traffic Management System is a cutting-edge solution designed to revolutionize urban traffic management.
+                By leveraging real-time data, predictive algorithms, and dynamic signal control, it optimizes traffic flow,
+                reduces congestion, and enhances road safety.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-solid border-t-[#233648] py-6">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+          <p>Developed by CULERS | SIH 2025 Project</p>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+</body>
+</html>

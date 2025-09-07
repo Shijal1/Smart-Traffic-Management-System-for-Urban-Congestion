@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Space+Grotesk%3Awght%40400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<title>About - Smart Traffic Management System</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+  :root {
+    --primary-color: #1173d4;
+    --secondary-color: #0b2238;
+  }
+  .active-nav {
+    color: var(--primary-color) !important;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 4px;
+  }
+</style>
+</head>
+<body class="bg-[#0D1117] text-white" style='font-family: "Space Grotesk", "Noto Sans", sans-serif;'>
+<div class="relative flex size-full min-h-screen flex-col overflow-x-hidden">
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-[#0D1117]/80 backdrop-blur-md border-b border-gray-800">
+  <div class="container mx-auto flex items-center justify-between h-20 px-6">
+    <div class="flex items-center gap-3">
+      <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="h-10 w-10"/>
+      <h1 class="text-xl font-bold text-white">Smart Traffic</h1>
+    </div>
+    <nav class="hidden md:flex gap-6">
+      <a href="{{ url_for('home') }}" class="hover:text-blue-400">Home</a>
+      <a href="{{ url_for('dashboard') }}" class="hover:text-blue-400">Dashboard</a>
+      <a href="{{ url_for('about') }}" class="text-blue-400 font-bold">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="flex-1">
+
+  <!-- Hero Section -->
+  <section class="relative flex min-h-[50vh] items-center justify-center bg-cover bg-center bg-no-repeat py-20" 
+  style='background-image: linear-gradient(rgba(13, 17, 23, 0.8), rgba(13, 17, 23, 1)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuA9_erZBz25x5QFq4UXnq5nPlrw9GJceidSDCcq1QI5rgMlIVjiRh66l_U_9I-gKkZnDpy6Qmzvq_fl3M6NljzDFr_lVW-E0AlGS2VFZ6mo_8Z7VCN4Xf19AggVRMkdtoylhn9mxYI7X9d4Y0vPNRAnkuHOzY1wB8Nl94cW7mymrDas43rcLFtqP0U2-_KINaqCnp_l7K8l9UMn-j0bErzF4ufFlbuD-JUEI9yG4IvQhsUD9If2f2rY0awSyFBCJ368pJnNG6ALIdoP");'>
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-4xl font-black leading-tight tracking-tight md:text-6xl">About Smart Traffic Management System</h1>
+      <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-300">
+        Our system leverages cutting-edge AI to predict and manage urban traffic, making cities smarter and more efficient.
+      </p>
+    </div>
+  </section>
+
+  <!-- Project Description & Goal -->
+  <section class="py-16 sm:py-20">
+    <div class="container mx-auto px-6 space-y-16">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
+        <div class="space-y-4">
+          <h2 class="text-3xl font-bold tracking-tight text-white">Project Description</h2>
+          <p class="text-gray-400">
+            The Smart Traffic Management System is an innovative solution designed to tackle urban traffic congestion. By integrating advanced AI algorithms, real-time data analysis, and predictive modeling, our system optimizes traffic flow, reduces commute times, and enhances road safety. This project is part of the Smart India Hackathon (SIH) 2025, showcasing our commitment to developing impactful solutions for real-world challenges.
+          </p>
+        </div>
+        <div class="space-y-4">
+          <h2 class="text-3xl font-bold tracking-tight text-white">Our Goal</h2>
+          <p class="text-gray-400">
+            Our primary goal is to transform urban traffic management, making it smoother, safer, and smarter. By providing predictive analytics and live dashboards, we empower city planners and commuters to make informed decisions, leading to reduced congestion, improved air quality, and enhanced overall quality of life.
+          </p>
+        </div>
+      </div>
+
+      <!-- Project Details -->
+      <div class="rounded-lg bg-[var(--secondary-color)] p-8 border border-gray-800">
+        <h2 class="text-3xl font-bold tracking-tight text-white mb-6 text-center">Project Details</h2>
+        <p class="text-gray-400 text-center max-w-4xl mx-auto mb-8">
+          Our system is built on a robust technical foundation, utilizing the Prophet model for accurate traffic prediction, a Flask backend for seamless data processing, Leaflet for interactive mapping, and Chart.js for dynamic data visualization. This combination of technologies ensures a reliable, scalable, and user-friendly experience.
+        </p>
+        <div class="flex justify-center items-center gap-8 flex-wrap">
+          <div class="flex items-center gap-3 text-lg font-medium">
+            <span class="material-symbols-outlined text-[var(--primary-color)]">neurology</span>
+            <span>AI (Prophet)</span>
+          </div>
+          <div class="flex items-center gap-3 text-lg font-medium">
+            <span class="material-symbols-outlined text-[var(--primary-color)]">dns</span>
+            <span>Flask Backend</span>
+          </div>
+          <div class="flex items-center gap-3 text-lg font-medium">
+            <span class="material-symbols-outlined text-[var(--primary-color)]">map</span>
+            <span>Leaflet</span>
+          </div>
+          <div class="flex items-center gap-3 text-lg font-medium">
+            <span class="material-symbols-outlined text-[var(--primary-color)]">monitoring</span>
+            <span>Chart.js</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Developers -->
+      <div>
+        <h2 class="text-3xl font-bold tracking-tight text-white mb-8 text-center">Meet the Developers</h2>
+        <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-6">
+          <div class="group flex flex-col items-center gap-3 text-center">
+            <div class="relative w-full h-auto aspect-square rounded-full overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-[var(--primary-color)]/20">
+              <div class="w-full h-full bg-cover bg-center bg-no-repeat" style='background-image: url("static/images/sristi.jpg");'></div>
+            </div>
+            <div>
+              <p class="font-medium">Sristi Pokharel</p>
+              <p class="text-sm text-gray-400">AI Specialist</p>
+            </div>
+          </div>
+          <div class="group flex flex-col items-center gap-3 text-center">
+            <div class="relative w-full h-auto aspect-square rounded-full overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-[var(--primary-color)]/20">
+              <div class="w-full h-full bg-cover bg-center bg-no-repeat" style='background-image: url("static/images/shijal.png");'></div>
+            </div>
+            <div>
+              <p class="font-medium">Shijal Mishra</p>
+              <p class="text-sm text-gray-400">Backend Developer</p>
+            </div>
+          </div>
+          <div class="group flex flex-col items-center gap-3 text-center">
+            <div class="relative w-full h-auto aspect-square rounded-full overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-[var(--primary-color)]/20">
+              <div class="w-full h-full bg-cover bg-center bg-no-repeat" style='background-image: url("static/images/stanley.jpg");'></div>
+            </div>
+            <div>
+              <p class="font-medium">Stanley Kevin</p>
+              <p class="text-sm text-gray-400">Frontend Developer</p>
+            </div>
+          </div>
+          <div class="group flex flex-col items-center gap-3 text-center">
+            <div class="relative w-full h-auto aspect-square rounded-full overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-[var(--primary-color)]/20">
+              <div class="w-full h-full bg-cover bg-center bg-no-repeat" style='background-image: url("static/images/shisir.jpg");'></div>
+            </div>
+            <div>
+              <p class="font-medium">Shisir Dhungana</p>
+              <p class="text-sm text-gray-400">Machine Learning</p>
+            </div>
+          </div>
+          <!-- Empty placeholders -->
+          <div class="group flex flex-col items-center gap-3 text-center"></div>
+          <div class="group flex flex-col items-center gap-3 text-center"></div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="text-center mt-16">
+        <h2 class="text-3xl font-bold tracking-tight text-white mb-4">Contact Us</h2>
+        <p class="text-gray-400 mb-6">For any inconvenience, feel free to contact us.</p>
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-6 text-lg">
+          <a class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors" href="tel:+917398760425">
+            <span class="material-symbols-outlined text-[var(--primary-color)]"> call </span>
+            <span>+91 7398760425</span>
+          </a>
+          <a class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors" href="mailto:shijalmishra100@gmail.com">
+            <span class="material-symbols-outlined text-[var(--primary-color)]"> mail </span>
+            <span>shijalmishra100@gmail.com</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-solid border-[#233648] bg-[#0D1117]">
+  <div class="container mx-auto px-6 py-8">
+    <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+      <div class="flex items-center gap-3">
+        <img alt="SmartTraffic Logo" class="h-8 w-auto" src="logo.jpg"/>
+        <span class="text-lg font-semibold">SmartTraffic Privacy Ltd.</span>
+      </div>
+      <p class="text-sm text-gray-400">© SIH 2025. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

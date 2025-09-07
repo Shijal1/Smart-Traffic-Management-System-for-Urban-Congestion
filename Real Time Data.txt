@@ -1,0 +1,5 @@
+Real Time Data
+Request For API Access and API Private Key
+Congratulations! Your API key has been authorised. Please note down your secret api key IHYeFJdY0JooMNHuC0kk8bgmf2oNK60d
+
+You shall also receive the API key on the registered email id.

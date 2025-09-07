@@ -1,0 +1,73 @@
+# import pandas as pd
+# from prophet import Prophet
+# from flask import Flask, render_template, jsonify
+# import threading
+# import time
+
+# app = Flask(__name__)
+
+# # -------------------
+# # Step 1: Load CSV
+# # -------------------
+# df = pd.read_csv("DATAS.csv")
+# df['date_time'] = pd.to_datetime(df['date_time'])
+# df = df[['date_time', 'traffic_volume']]
+# df_prophet = df.rename(columns={'date_time':'ds','traffic_volume':'y'})
+
+# # -------------------
+# # Step 2: Train Prophet Model
+# # -------------------
+# model = Prophet()
+# model.fit(df_prophet)
+
+# future = model.make_future_dataframe(periods=24, freq='H')
+# forecast = model.predict(future)
+
+# # -------------------
+# # Step 3: Simulate Live Feed
+# # -------------------
+# live_data = []
+
+# def simulate_live_feed():
+#     for index, row in df.iterrows():
+#         current_time = row['date_time']
+#         actual_traffic = row['traffic_volume']
+        
+#         # Predicted traffic
+#         pred_row = forecast[forecast['ds'] == current_time]
+#         predicted_traffic = pred_row['yhat'].values[0] if not pred_row.empty else None
+        
+#         # Congestion level
+#         if actual_traffic > 5000:
+#             congestion = "High"
+#         elif actual_traffic > 3000:
+#             congestion = "Medium"
+#         else:
+#             congestion = "Low"
+        
+#         # Append to live_data
+#         live_data.append({
+#             "time": str(current_time),
+#             "actual": int(actual_traffic),
+#             "predicted": round(predicted_traffic,2),
+#             "congestion": congestion
+#         })
+#         time.sleep(1)  # simulate live feed
+
+# # Run simulation in background
+# threading.Thread(target=simulate_live_feed, daemon=True).start()
+
+
+# # -------------------
+# # Step 4: Flask Routes
+# # -------------------
+# @app.route("/")
+# def index():
+#     return render_template("index.html")  # HTML dashboard
+
+# @app.route("/live")
+# def get_live_data():
+#     return jsonify(live_data)  # Return JSON for frontend
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
