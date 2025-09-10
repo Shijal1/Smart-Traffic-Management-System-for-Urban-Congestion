@@ -29,12 +29,12 @@
         </nav>
       </header>
 
-      <!-- Hero Section -->
+      <!-- Hero Section with Background Image -->
       <main class="flex-1">
-        <section class="relative flex min-h-[60vh] items-center justify-center bg-cover bg-center py-20 text-white" style="background-image: linear-gradient(rgba(17, 26, 34, 0.8), rgba(17, 26, 34, 0.8)), url('https://lh3.googleusercontent.com/...');">
+        <section class="relative flex min-h-[60vh] items-center justify-center bg-cover bg-center py-20 text-white" style="background-image: linear-gradient(rgba(17, 26, 34, 0.8), rgba(17, 26, 34, 0.8)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAu-dnOUx7zdF2Z-EzQWIQ4_zbgXh7vU7tx_xsVyIU10JDcfMuhNE91yGAK5ZO3J7GB_YY1Cc9qJPddPjwJB6Jm5ond9UcurUgr9V82Ch2bMHkZAutQhYYnGTCQbV3nWZk2ephal1IDtspDCGWH_6nXp4bpQAp-cK_wsesElHggz_OrxSnB5vahIewFZy9j5IFCpPRwxStCzylsDoVKFhpBqKK1ZiwYNH_36CE3SvDPIz9zGMkXrieZ4X17WLmj3FxGOSobvJNt_qxN');">
           <div class="container mx-auto px-4 text-center">
             <h1 class="text-5xl font-bold leading-tight tracking-tight md:text-6xl">Smart Traffic Management System</h1>
-            <p class="mt-4 text-lg text-gray-300 md:text-xl">Monitor, predict, and optimize urban traffic</p>
+            <p class="mt-4 text-lg text-gray-300 md:text-xl">Monitor, predict, and optimize urban traffic in real-time</p>
             <a class="mt-8 inline-block rounded-md bg-[#1172d4] px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-600" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
           </div>
         </section>
@@ -104,9 +104,7 @@
                       (type==="congestion" ? "bg-red-600" : "bg-yellow-500");
       toastContainer.appendChild(div);
 
-      setTimeout(() => {
-        div.remove();
-      }, 5000);
+      setTimeout(() => { div.remove(); }, 5000);
     }
 
     async function fetchAlerts() {
