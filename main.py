@@ -40,10 +40,10 @@ def simulate_live_feed():
         elif actual_traffic > 3000:
             congestion = "Medium"
 
-        # Simulate random vehicle positions around Delhi (28.61, 77.21)
+        # Simulate random vehicle positions around Delhi
         lat = 28.61 + random.uniform(-0.01, 0.01)
         lon = 77.21 + random.uniform(-0.01, 0.01)
-        speed = random.randint(20, 60)
+        speed = random.randint(5, 60)
 
         live_data.append({
             "time": str(current_time),
@@ -56,7 +56,7 @@ def simulate_live_feed():
             "speed": speed
         })
 
-        time.sleep(1)  # simulate live stream delay
+        time.sleep(0.5)  # faster simulation for testing
 
 # Run live feed in background
 threading.Thread(target=simulate_live_feed, daemon=True).start()
@@ -78,15 +78,26 @@ def about():
 
 @app.route("/live")
 def live():
-    # Send latest 50 points as "historical"
     historical = live_data[-50:]
-    # Send latest 10 vehicles as "real-time"
     vehicles = live_data[-10:]
+    return jsonify({"historical": historical, "real_time": vehicles})
 
-    return jsonify({
-        "historical": historical,
-        "real_time": vehicles
-    })
+@app.route("/alerts")
+def alerts():
+    recent = live_data[-10:]
+    alerts_list = []
+    for point in recent:
+        if point['congestion'] == "High":
+            alerts_list.append({
+                "type": "congestion",
+                "message": f"High traffic at {point['time']}! Vehicle {point['vehicle_id']}"
+            })
+        if point['speed'] < 15:
+            alerts_list.append({
+                "type": "speed_alert",
+                "message": f"Vehicle {point['vehicle_id']} moving very slowly at {point['time']}!"
+            })
+    return jsonify(alerts_list)
 
 if __name__ == "__main__":
     app.run(debug=True)

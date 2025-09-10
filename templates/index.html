@@ -8,6 +8,9 @@
   <title>Smart Traffic</title>
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <style>
+    #toast-container { position: fixed; top: 1rem; right: 1rem; z-index: 9999; }
+  </style>
 </head>
 <body>
   <div class="relative flex size-full min-h-screen flex-col bg-[#111a22] overflow-x-hidden" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif;">
@@ -20,19 +23,18 @@
           <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Smart Traffic</h2>
         </div>
         <nav class="flex items-center gap-6 text-base text-gray-300">
-  <a class="hover:text-white transition-colors" href="{{ url_for('home') }}">Home</a>
-  <a class="hover:text-white transition-colors" href="{{ url_for('dashboard') }}">Dashboard</a>
-  <a class="hover:text-white transition-colors" href="{{ url_for('about') }}">About</a>
-</nav>
-
+          <a class="hover:text-white transition-colors" href="{{ url_for('home') }}">Home</a>
+          <a class="hover:text-white transition-colors" href="{{ url_for('dashboard') }}">Dashboard</a>
+          <a class="hover:text-white transition-colors" href="{{ url_for('about') }}">About</a>
+        </nav>
       </header>
 
       <!-- Hero Section -->
       <main class="flex-1">
-        <section class="relative flex min-h-[60vh] items-center justify-center bg-cover bg-center py-20 text-white" style="background-image: linear-gradient(rgba(17, 26, 34, 0.8), rgba(17, 26, 34, 0.8)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAu-dnOUx7zdF2Z-EzQWIQ4_zbgXh7vU7tx_xsVyIU10JDcfMuhNE91yGAK5ZO3J7GB_YY1Cc9qJPddPjwJB6Jm5ond9UcurUgr9V82Ch2bMHkZAutQhYYnGTCQbV3nWZk2ephal1IDtspDCGWH_6nXp4bpQAp-cK_wsesElHggz_OrxSnB5vahIewFZy9j5IFCpPRwxStCzylsDoVKFhpBqKK1ZiwYNH_36CE3SvDPIz9zGMkXrieZ4X17WLmj3FxGOSobvJNt_qxN');">
+        <section class="relative flex min-h-[60vh] items-center justify-center bg-cover bg-center py-20 text-white" style="background-image: linear-gradient(rgba(17, 26, 34, 0.8), rgba(17, 26, 34, 0.8)), url('https://lh3.googleusercontent.com/...');">
           <div class="container mx-auto px-4 text-center">
             <h1 class="text-5xl font-bold leading-tight tracking-tight md:text-6xl">Smart Traffic Management System</h1>
-            <p class="mt-4 text-lg text-gray-300 md:text-xl">Monitor, predict, and optimize urban traffic in real-time</p>
+            <p class="mt-4 text-lg text-gray-300 md:text-xl">Monitor, predict, and optimize urban traffic</p>
             <a class="mt-8 inline-block rounded-md bg-[#1172d4] px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-blue-600" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
           </div>
         </section>
@@ -41,19 +43,20 @@
         <section class="py-20 bg-[#1a2632]">
           <div class="container mx-auto px-4">
             <h2 class="text-center text-4xl font-bold text-white mb-12">Features</h2>
-            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-              <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
-                <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">directions_car</span>
-                <h3 class="text-xl font-bold text-white mb-2">Real-time Monitoring</h3>
-              </div>
-              <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              <!-- Traffic Predictions (clickable to dashboard) -->
+              <a href="{{ url_for('dashboard') }}#traffic-prediction" class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg hover:bg-[#162638] transition-colors">
                 <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">show_chart</span>
                 <h3 class="text-xl font-bold text-white mb-2">Traffic Predictions</h3>
-              </div>
+              </a>
+
+              <!-- Dynamic Traffic Signals -->
               <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
                 <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">traffic</span>
                 <h3 class="text-xl font-bold text-white mb-2">Dynamic Traffic Signals</h3>
               </div>
+
+              <!-- Alerts & Notifications -->
               <div class="flex flex-col items-center text-center p-6 bg-[#111a22] rounded-lg">
                 <span class="material-symbols-outlined text-5xl text-[#1172d4] mb-4">notifications_active</span>
                 <h3 class="text-xl font-bold text-white mb-2">Alerts & Notifications</h3>
@@ -86,5 +89,39 @@
 
     </div>
   </div>
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toastContainer = document.getElementById("toast-container");
+
+    function showToast(message, type="info") {
+      const div = document.createElement("div");
+      div.innerText = message;
+      div.className = "mb-2 px-4 py-2 rounded shadow text-white transition-all duration-300 " +
+                      (type==="congestion" ? "bg-red-600" : "bg-yellow-500");
+      toastContainer.appendChild(div);
+
+      setTimeout(() => {
+        div.remove();
+      }, 5000);
+    }
+
+    async function fetchAlerts() {
+      try {
+        const res = await fetch("/alerts");
+        const data = await res.json();
+        data.forEach(alert => showToast(alert.message, alert.type));
+      } catch(e) {
+        console.error("Failed to fetch alerts", e);
+      }
+    }
+
+    fetchAlerts();
+    setInterval(fetchAlerts, 10000);
+  });
+  </script>
 </body>
 </html>
