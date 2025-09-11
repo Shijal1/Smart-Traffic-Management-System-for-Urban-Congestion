@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Login - Smart Traffic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#111a22] flex items-center justify-center h-screen" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif;">
+  <div class="bg-[#1a2632] p-10 rounded-2xl shadow-lg w-full max-w-md text-center">
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="mx-auto h-20 w-20 mb-6 rounded-full">
+    <h2 class="text-white text-2xl font-bold mb-6">Smart Traffic Login</h2>
+    
+    <form method="POST" action="{{ url_for('login') }}" class="space-y-6">
+      <div>
+        <input type="text" name="username" placeholder="Enter ID" required class="w-full p-3 rounded bg-[#111a22] text-white border border-gray-600 focus:outline-none focus:border-[#1172d4]">
+      </div>
+      <div>
+        <input type="password" name="password" placeholder="Enter Password" required class="w-full p-3 rounded bg-[#111a22] text-white border border-gray-600 focus:outline-none focus:border-[#1172d4]">
+      </div>
+      <button type="submit" class="w-full bg-[#1172d4] text-white p-3 rounded hover:bg-blue-600 transition">Login</button>
+    </form>
+
+    {% if error %}
+      <p class="text-red-500 mt-4">{{ error }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>

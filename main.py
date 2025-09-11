@@ -1,9 +1,16 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 import pandas as pd
 from prophet import Prophet
 import threading, time, random
 
 app = Flask(__name__)
+app.secret_key = "IHYeFJdY0JooMNHuC0kk8bgmf2oNK60d"  # change this to something random & secure
+
+# -------------------------
+# Dummy credentials
+# -------------------------
+USERNAME = "admin"   # your login ID
+PASSWORD = "1234"    # your login password
 
 # -------------------------
 # Load and prepare dataset
@@ -62,28 +69,59 @@ def simulate_live_feed():
 threading.Thread(target=simulate_live_feed, daemon=True).start()
 
 # -------------------------
-# Flask routes
+# Authentication routes
 # -------------------------
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == USERNAME and password == PASSWORD:
+            session["user"] = username
+            return redirect(url_for("home"))
+        else:
+            return render_template("login.html", error="Invalid ID or Password")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("login"))
+
+# -------------------------
+# Protected routes
+# -------------------------
+@app.route("/home")
 def home():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template("index.html")
 
 @app.route("/dashboard")
 def dashboard():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template("dashboard.html")
 
 @app.route("/about")
 def about():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template("about.html")
 
 @app.route("/live")
 def live():
+    if "user" not in session:
+        return redirect(url_for("login"))
     historical = live_data[-50:]
     vehicles = live_data[-10:]
     return jsonify({"historical": historical, "real_time": vehicles})
 
 @app.route("/alerts")
 def alerts():
+    if "user" not in session:
+        return redirect(url_for("login"))
     recent = live_data[-10:]
     alerts_list = []
     for point in recent:
