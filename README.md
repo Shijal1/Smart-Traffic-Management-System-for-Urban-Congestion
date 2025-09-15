@@ -1,7 +1,7 @@
 Smart Traffic Management System for Urban Congestion
 
 Overview
-
+ 
 The Smart Traffic Management System is a real-time web application that monitors, predicts, and optimizes urban traffic using AI and dynamic traffic signals. It helps city planners and commuters make informed decisions to reduce congestion, improve safety, and enhance traffic flow.
 
 Features:
